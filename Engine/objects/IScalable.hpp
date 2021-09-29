@@ -9,4 +9,5 @@ public:
     virtual ~IScalable() = default;
 
     virtual glm::vec3 getScale() const = 0;
+    virtual void setScale(const glm::vec3&) = 0;
 };

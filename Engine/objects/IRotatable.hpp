@@ -9,4 +9,5 @@ public:
     virtual ~IRotatable() = default;
 
     virtual glm::quat getRotation() const = 0;
+    virtual void setRotation(const glm::quat&) = 0;
 };

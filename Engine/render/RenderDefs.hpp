@@ -52,7 +52,7 @@ struct Model {
     Mesh<Point> norms;
 };
 
-template<typename Point=glm::vec3, typename TexPoint = glm::vec2>
+template<typename Point = glm::vec3, typename TexPoint = glm::vec2>
 struct TexturedModel: Model<Point>{
     Mesh<TexPoint> texCoords;
 };

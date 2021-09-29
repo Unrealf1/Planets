@@ -6,6 +6,7 @@
 #include <vector>
 #include <spdlog/spdlog.h>
 #include <SOIL2.h>
+#include <filesystem>
 
 
 class GraphicsInitializer {
@@ -58,7 +59,7 @@ public:
     }
 
     template<typename Point>
-    static GraphicObject initObject(const TexturedModel<Point>& model, const std::string& texture_file_path) {
+    static GraphicObject initObject(const TexturedModel<Point>& model, const std::filesystem::path& texture_file_path) {
         GraphicObject go = initObject(model);
         
         go.texture = initTexture(texture_file_path);
@@ -79,7 +80,7 @@ public:
         return go;
     }
 
-    static GLuint initTexture(const std::string& texture_file_path) {
+    static GLuint initTexture(const std::filesystem::path& texture_file_path) {
         GLuint texture = 0;
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
@@ -87,10 +88,10 @@ public:
         int width, height;
         unsigned char* image = SOIL_load_image(texture_file_path.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
         if (!image) {
-            spdlog::error("SOIL loading error for texture at \"{}\": {}", texture_file_path, SOIL_last_result());
+            spdlog::error("SOIL loading error for texture at \"{}\": {}", texture_file_path.c_str(), SOIL_last_result());
             return 0;
         }
-        spdlog::debug("From file {}, created texture with id {}, w={}, h={}", texture_file_path, texture, width, height);
+        spdlog::debug("From file {}, created texture with id {}, w={}, h={}", texture_file_path.c_str(), texture, width, height);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
         glGenerateMipmap(GL_TEXTURE_2D);
         SOIL_free_image_data(image);

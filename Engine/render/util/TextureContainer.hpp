@@ -3,12 +3,18 @@
 #include <unordered_map>
 #include <string>
 #include <GL/glew.h>
+#include <filesystem>
 
 #include "render/util/GraphicsInitializer.hpp"
 
 
 class TextureContainer {
 public:
+    static std::filesystem::path getFullTexturePath(const std::string& name) {
+        static std::filesystem::path base_dir = std::filesystem::path("resources") / std::filesystem::path("textures");
+        return base_dir / name;
+    }
+
     static bool checkTexture(const std::string& name) {
         return _textures.find(name) != _textures.end();
     }

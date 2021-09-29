@@ -92,35 +92,3 @@ std::vector<Triangle<>> Sphere::refineSphere(const std::vector<Triangle<>>& curr
 
     return refined;
 }
-
-void Sphere::draw(const DrawInfo& info) {
-    auto program = ProgramContainer::getProgram("simple prog");
-
-    glUseProgram(program);
-    glBindVertexArray(_graphics.vao);
-    glUniformMatrix4fv(
-        glGetUniformLocation(program, "view"),
-        1,
-        GL_FALSE,
-        glm::value_ptr(info.view_mat)
-    );
-    glUniformMatrix4fv(
-        glGetUniformLocation(program, "projection"),
-        1,
-        GL_FALSE,
-        glm::value_ptr(info.proj_mat)
-    );
-    auto model = glm::mat4(1.0f);
-    glUniformMatrix4fv(
-        glGetUniformLocation(program, "model"),
-        1,
-        GL_FALSE,
-        glm::value_ptr(model)
-    );
-    glUniform1f(
-        glGetUniformLocation(program, "seconds"),
-        info.seconds_since_start
-    );
-    glDrawArrays(GL_TRIANGLES, 0, _graphics.vertex_cnt);
-    glBindVertexArray(0);
-}

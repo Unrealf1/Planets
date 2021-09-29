@@ -30,6 +30,8 @@ ApplicationParameters ApplicationParametersReader::read(const std::string& filep
         if (raw == 1) {
             return spdlog::level::err;
         } else if (raw == 2) {
+            return spdlog::level::info;
+        } else if (raw == 3) {
             return spdlog::level::debug;
         } else {
             return spdlog::level::off;

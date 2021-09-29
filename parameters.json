@@ -1,5 +1,5 @@
 {
-	"far_plane" : 200.0,
+	"far_plane" : 20000.0,
 	"log_level" : 2,
 	"log_location" : "",
 	"max_fps" : 60,
