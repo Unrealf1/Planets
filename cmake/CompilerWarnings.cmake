@@ -28,7 +28,7 @@ function(set_project_warnings project_name)
       /w14905 # wide string literal cast to 'LPSTR'
       /w14906 # string literal cast to 'LPWSTR'
       /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
-      /permissive- # standards conformance mode for MSVC compiler.
+      #/permissive- # standards conformance mode for MSVC compiler.
   )
 
   set(BASE_WARNINGS
@@ -51,7 +51,7 @@ function(set_project_warnings project_name)
 
   if(WARNINGS_AS_ERRORS)
     set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
-    set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
+    #set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
   endif()
 
   set(CLANG_WARNINGS

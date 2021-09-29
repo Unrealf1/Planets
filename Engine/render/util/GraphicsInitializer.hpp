@@ -86,12 +86,12 @@ public:
         glBindTexture(GL_TEXTURE_2D, texture);
 
         int width, height;
-        unsigned char* image = SOIL_load_image(texture_file_path.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+        unsigned char* image = SOIL_load_image(texture_file_path.string().c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
         if (!image) {
-            spdlog::error("SOIL loading error for texture at \"{}\": {}", texture_file_path.c_str(), SOIL_last_result());
+            spdlog::error("SOIL loading error for texture at \"{}\": {}", texture_file_path.string(), SOIL_last_result());
             return 0;
         }
-        spdlog::debug("From file {}, created texture with id {}, w={}, h={}", texture_file_path.c_str(), texture, width, height);
+        spdlog::debug("From file {}, created texture with id {}, w={}, h={}", texture_file_path.string(), texture, width, height);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
         glGenerateMipmap(GL_TEXTURE_2D);
         SOIL_free_image_data(image);

@@ -113,6 +113,9 @@ void RenderWorker::Start() {
     _logger->debug("starting render worker...");
     Init();
     while (_state.alive) {
+        // so windows don't this that
+        // window is unresponsive
+        glfwPollEvents(); 
         //AwaitFrameStart();
         ResetFrame();
         _logger->debug("processing render requests...");

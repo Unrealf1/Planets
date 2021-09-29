@@ -35,10 +35,10 @@ public:
         auto shaders_dir = std::filesystem::path("resources/shaders");
         shaders_dir.make_preferred();
 
-        auto text = extractShaderText(shaders_dir / "Textured.vert");
+        auto text = extractShaderText((shaders_dir / "Textured.vert").string());
         auto vertex_shader = createVertexShader(text.c_str());
 
-        text = extractShaderText(shaders_dir / "Textured.frag");
+        text = extractShaderText((shaders_dir / "Textured.frag").string());
         auto frag_shader = createFragmentShader(text.c_str());
 
         auto program = createProgram(vertex_shader, frag_shader);
