@@ -94,10 +94,8 @@ std::vector<Triangle<>> Sphere::refineSphere(const std::vector<Triangle<>>& curr
 }
 
 void Sphere::draw(const DrawInfo& info) {
-    std::cout << "getting program..." << std::endl;
     auto program = ProgramContainer::getProgram("simple prog");
 
-    std::cout << "got program, it's id is " << program << std::endl;
     glUseProgram(program);
     glBindVertexArray(_graphics.vao);
     glUniformMatrix4fv(
@@ -112,14 +110,17 @@ void Sphere::draw(const DrawInfo& info) {
         GL_FALSE,
         glm::value_ptr(info.proj_mat)
     );
-    auto model = glm::vec4(1.0f);
+    auto model = glm::mat4(1.0f);
     glUniformMatrix4fv(
         glGetUniformLocation(program, "model"),
         1,
         GL_FALSE,
         glm::value_ptr(model)
     );
-    std::cout << "almost draw..." << std::endl;
+    glUniform1f(
+        glGetUniformLocation(program, "seconds"),
+        info.seconds_since_start
+    );
     glDrawArrays(GL_TRIANGLES, 0, _graphics.vertex_cnt);
     glBindVertexArray(0);
 }

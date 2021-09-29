@@ -160,6 +160,7 @@ void FreeCameraMover::update(const UpdateInfo& info) {
     //Двигаем камеру вперед/назад
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
+        std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
         _pos += forwDir * actual_speed * static_cast<float>(dt);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)

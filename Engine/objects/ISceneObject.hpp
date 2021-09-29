@@ -14,7 +14,7 @@
  * void init()
  * void update(const UpdateInfo&) 
  */
-class SceneObject : public IDrawable, public IUpdatable { };
+class ISceneObject : public IDrawable, public IUpdatable { };
 
 /**
  * Realizations of this interface have to provide all of requirements of `SceneObject` and additionally
@@ -22,4 +22,4 @@ class SceneObject : public IDrawable, public IUpdatable { };
  * glm::quat getRotation() const
  * glm::vec3 getScale() const
  */
-class BasicSceneObject : public SceneObject, public IMovable, public IRotatable, public IScalable { };
+class IBasicSceneObject : public ISceneObject, public IMovable, public IRotatable, public IScalable { };

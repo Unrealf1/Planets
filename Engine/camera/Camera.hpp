@@ -16,7 +16,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "render/IUpdatable.hpp"
+#include "objects/ISceneObject.hpp"
 
 #include <memory>
 
@@ -29,10 +29,13 @@ struct CameraInfo
 /**
 Класс для управления виртуальной камерой
 */
-class CameraMover : public IUpdatable {
+class CameraMover : public ISceneObject {
 public:
     CameraMover() {}
     virtual ~CameraMover() {}
+
+    void draw(const DrawInfo&) override { }
+    void init() override { }
 
     /**
     Возвращает параметры виртуальной камеры в виде 2х матриц: матрицы вида и проекции

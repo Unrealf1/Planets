@@ -7,4 +7,5 @@
 struct DrawInfo {
     glm::mat4 view_mat;
     glm::mat4 proj_mat;
+    float seconds_since_start;
 };

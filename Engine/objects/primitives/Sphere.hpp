@@ -11,10 +11,9 @@
 #include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
 
 
-class Sphere : public BasicSceneObject {
+class Sphere : public IBasicSceneObject {
 public:
     Sphere(float radius, uint64_t num_polygons) 
     :
@@ -29,7 +28,6 @@ public:
 
     void init() override {
         _model = createSphereModel(_num_polygons);
-        std::cout << "model size is " << _model.mesh.size() << std::endl;
         _graphics = GraphicsInitializer::initObject(_model);
 
         if (ProgramContainer::checkProgram("simple prog")) {
