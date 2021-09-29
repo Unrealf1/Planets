@@ -10,6 +10,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include <algorithm>
 
 /*
 My vector space:
@@ -19,26 +20,39 @@ Z up
 */
 
 constexpr std::size_t instance_render_limit = 100;
-using Point = glm::vec3;
 
+template <typename Point = glm::vec3>
 using Mesh = std::vector<Point>;
 
+template<typename Point=glm::vec3>
 struct Triangle {
     Point a;
     Point b;
     Point c;
 };
 
-inline Mesh FlattenTriangles(std::vector<Triangle> triangles) {
-    return {};
+
+template<typename Point>
+inline Mesh<Point> FlattenTriangles(std::vector<Triangle<Point>> triangles) {
+    Mesh<Point> result;
+    result.reserve(triangles.size() * 3);
+
+    for (const auto& triangle : triangles) {
+        result.push_back(triangle.a);
+        result.push_back(triangle.b);
+        result.push_back(triangle.c);
+    }
+    
+    return result;
 }
 
+template<typename Point=glm::vec3>
 struct Model {
     Mesh<Point> mesh;
     Mesh<Point> norms;
 };
 
-template<typename TexPoint = glm::vec2>
+template<typename Point=glm::vec3, typename TexPoint = glm::vec2>
 struct TexturedModel: Model<Point>{
     Mesh<TexPoint> texCoords;
 };

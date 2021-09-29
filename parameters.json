@@ -1,0 +1,8 @@
+{
+	"far_plane" : 200.0,
+	"log_level" : 1,
+	"log_location" : "",
+	"max_fps" : 60,
+	"near_plane" : 0.1,
+	"window_name" : "Planets"
+}

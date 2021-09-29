@@ -4,6 +4,7 @@
 #include "render/IUpdatable.hpp"
 #include "objects/IMovable.hpp"
 #include "objects/IRotatable.hpp"
+#include "objects/IScalable.hpp"
 
 /**
  * All that is displayed on the screen should inherit from this interface.

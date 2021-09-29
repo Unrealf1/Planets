@@ -3,10 +3,10 @@
 #include "render/DrawInfo.hpp"
 #include "render/RenderDefs.hpp"
 
-class DrawableUnit {
+class IDrawable {
 public:
-    DrawableUnit() = default;
-    virtual ~DrawableUnit() = default;
+    IDrawable() = default;
+    virtual ~IDrawable() = default;
 
     virtual void draw(const DrawInfo&) = 0;
     virtual void init() = 0;    
