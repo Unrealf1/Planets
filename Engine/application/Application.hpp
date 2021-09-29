@@ -28,9 +28,6 @@ public:
     void start() {
         _logger->info("started");
         _program_start = _wall_clock.now();
-        //initGUI();
-
-        //_logger->debug("GUI initialized");
 
         prepareScene();
         _logger->debug("scene prepared");
@@ -38,6 +35,7 @@ public:
         run();
     }
 
+    InputManager inputManager;
 private:
     ApplicationParameters _params;
     Renderer _renderer;
@@ -46,6 +44,8 @@ private:
     wall_clock_t::time_point _program_start;
     std::vector<std::shared_ptr<ISceneObject>> _objects;
     std::shared_ptr<FreeCameraMover> _cameraMover;
+    bool _alive = true;
+    
 
     float seconds_since_start() {
         auto duration = _wall_clock.now() - _program_start;
@@ -80,20 +80,23 @@ private:
         while(!_renderer.IsInitialized()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
-        glfwMakeContextCurrent(_renderer.getWindow());
+        auto window = _renderer.getWindow();
+        glfwMakeContextCurrent(window);
+
+        inputManager.init(window);
     }
 
     void run() {
         _logger->info("Starting main loop");
-        while(!glfwWindowShouldClose(_renderer.getWindow())) {
-            glfwPollEvents();
+        while(_alive) {
+            ProcessInput();
             ProcessFrame();            
         }
         _logger->info("Closing the program");
     }
 
     float timeSinceLastFrame() {
-        return 0.01f;
+        return 0.001f;
     }
 
     DrawInfo generateDrawInfo() {
@@ -107,9 +110,16 @@ private:
 
     UpdateInfo generateUpdateInfo() {
         return {
-            .window=_renderer.getWindow(), 
-            .dt = timeSinceLastFrame(),    
+            .window = _renderer.getWindow(), 
+            .dt = timeSinceLastFrame(),   
+            .keyInputs = inputManager.extractKeyInputs(),
+            .mouseMoveInputs = inputManager.extractMouseMoveEvents(),
+            .mouseScrollInputs = inputManager.extractMouseScrollEvents()
         };
+    }
+
+    void ProcessInput() {
+        _alive = inputManager.update();
     }
 
     void ProcessFrame() {

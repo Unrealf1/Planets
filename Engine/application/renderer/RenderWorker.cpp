@@ -21,7 +21,7 @@ void RenderWorker::Init() {
 void RenderWorker::InitWindow() {
     //Инициализируем библиотеку GLFW
     if (!glfwInit()) {
-        _logger->error("could not start GLFW3");
+        _logger->debug("could not start GLFW3");
         exit(1);
     }
 
@@ -115,9 +115,9 @@ void RenderWorker::Start() {
     while (_state.alive) {
         //AwaitFrameStart();
         ResetFrame();
-        _logger->error("processing render requests...");
+        _logger->debug("processing render requests...");
         ProcessRequests();
-        _logger->error("finished rendering!");
+        _logger->debug("finished rendering!");
         // considering next frame as current draw frame 
         
         _state.state_mutex.lock();
@@ -126,5 +126,5 @@ void RenderWorker::Start() {
 
         _state.rendering_finished.notify_all();
     }
-    _logger->error("stopping render worker");
+    _logger->debug("stopping render worker");
 }

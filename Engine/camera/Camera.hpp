@@ -17,6 +17,7 @@
 #include <GLFW/glfw3.h>
 
 #include "objects/ISceneObject.hpp"
+#include "input/InputEvent.hpp"
 
 #include <memory>
 
@@ -46,17 +47,17 @@ public:
     Обрабатывает нажатия кнопок на клавитуре.
     См. сигнатуру GLFWkeyfun библиотеки GLFW
     */
-    virtual void handleKey(GLFWwindow* window, int key, int scancode, int action, int mods) = 0;
+    virtual void handleKey(const KeyInputEvent&) = 0;
 
     /**
     Обрабатывает движение мышки
     */
-    virtual void handleMouseMove(GLFWwindow* window, double xpos, double ypos) = 0;
+    virtual void handleMouseMove(const MouseMoveInputEvent&) = 0;
 
     /**
     Обрабатывает колесико мыши
     */
-    virtual void handleScroll(GLFWwindow* window, double xoffset, double yoffset) = 0;
+    virtual void handleScroll(const MouseScrollInputEvent&) = 0;
 
     /**
     Обновляет положение виртуальной камеры
@@ -83,9 +84,9 @@ using CameraMoverPtr = std::shared_ptr<CameraMover>;
 class OrbitCameraMover : public CameraMover
 {
 public:
-    void handleKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
-    void handleMouseMove(GLFWwindow* window, double xpos, double ypos) override;
-    void handleScroll(GLFWwindow* window, double xoffset, double yoffset) override;
+    void handleKey(const KeyInputEvent&) override;
+    void handleMouseMove(const MouseMoveInputEvent&) override;
+    void handleScroll(const MouseScrollInputEvent&) override;
     void update(const UpdateInfo& info) override;
 
 	void showOrientationParametersImgui() override;
@@ -116,9 +117,9 @@ class FreeCameraMover : public CameraMover
 public:
     FreeCameraMover(float speed);
 
-    void handleKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
-    void handleMouseMove(GLFWwindow* window, double xpos, double ypos) override;
-    void handleScroll(GLFWwindow* window, double xoffset, double yoffset) override;
+    void handleKey(const KeyInputEvent&) override;
+    void handleMouseMove(const MouseMoveInputEvent&) override;
+    void handleScroll(const MouseScrollInputEvent&) override;
     void update(const UpdateInfo& info) override;
     glm::vec3 getPos() override {
         return _pos;

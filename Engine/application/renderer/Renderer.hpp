@@ -23,6 +23,7 @@ public:
         .rendering_started={},
         .draw_info={},
         .params=params,
+        .window=nullptr,
         .initialized=false
         
     } {
