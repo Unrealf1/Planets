@@ -35,6 +35,8 @@ public:
     CameraMover() {}
     virtual ~CameraMover() {}
 
+    bool isMarkedForDeletion() { return false; }
+    void markForDeletion() { }
     void draw(const DrawInfo&) override { }
     void init() override { }
 

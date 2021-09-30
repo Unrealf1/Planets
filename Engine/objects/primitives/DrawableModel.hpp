@@ -47,6 +47,14 @@ public:
 
     void update(const UpdateInfo&) override { }
 
+    bool isMarkedForDeletion() {
+        return _alive;
+    }
+
+    void markForDeletion() {
+        _alive = false;
+    }
+
     glm::vec3 getPosition() const override {
         return _position;
     }
@@ -78,6 +86,7 @@ private:
     TexturedModel<> _model;
     std::filesystem::path _texture_path;
     GraphicObject _graphics;
+    bool _alive = true;
 
     static constexpr char const* program_name = "textured";
 

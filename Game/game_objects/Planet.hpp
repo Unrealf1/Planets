@@ -69,6 +69,12 @@ public:
         _graphics->update(info);
     }
 
+    bool isMarkedForDeletion() {
+        return false;
+    }
+
+    void markForDeletion() { }
+
 private:
     std::unique_ptr<DrawableModel> _graphics;
     std::string _name;

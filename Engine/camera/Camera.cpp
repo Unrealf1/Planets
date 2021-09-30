@@ -110,7 +110,7 @@ _pos(5.0f, 0.0f, 2.5f)
     _rot = glm::toQuat(glm::lookAt(_pos, glm::vec3(0.0f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f)));
 }
 
-void FreeCameraMover::handleKey(const KeyInputEvent& event) { }
+void FreeCameraMover::handleKey(const KeyInputEvent&) { }
 
 void FreeCameraMover::handleMouseMove(const MouseMoveInputEvent& event)  {
     //int left_button_state, double xpos, double ypos
@@ -134,7 +134,7 @@ void FreeCameraMover::handleMouseMove(const MouseMoveInputEvent& event)  {
     _oldYPos = ypos;
 }
 
-void FreeCameraMover::handleScroll(const MouseScrollInputEvent& event) { }
+void FreeCameraMover::handleScroll(const MouseScrollInputEvent&) { }
 
 void FreeCameraMover::update(const UpdateInfo& info) {
     for (auto& event : info.mouseMoveInputs) {

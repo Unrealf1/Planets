@@ -2,24 +2,22 @@
 
 #include "application/renderer/Renderer.hpp"
 #include "application/ApplicationParameters.hpp"
-#include "objects/primitives/Planet.hpp"
-#include "camera/Camera.hpp"
-#include "objects/ISceneObject.hpp"
+#include "application/IScene.hpp"
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <chrono>
-#include "render/util/TextureContainer.hpp"
 
 
 class Application {
     using wall_clock_t = std::chrono::steady_clock;
 public:
-    Application(const ApplicationParameters& params)
+    Application(const ApplicationParameters& params, std::unique_ptr<IScene> initial_scene)
     : 
     _params(params),
-    _renderer(params)
+    _renderer(params),
+    _active_scene(std::move(initial_scene))
     {
         initLogger();
     }
@@ -43,10 +41,9 @@ private:
     std::shared_ptr<spdlog::logger> _logger;
     wall_clock_t _wall_clock;
     wall_clock_t::time_point _program_start;
-    std::vector<std::shared_ptr<ISceneObject>> _objects;
-    std::shared_ptr<FreeCameraMover> _cameraMover;
     bool _alive = true;
-    wall_clock_t::time_point _last_frame_time;
+    double _last_frame_time;
+    std::unique_ptr<IScene> _active_scene;
     
 
     float seconds_since_start() {
@@ -66,21 +63,9 @@ private:
     }
 
     virtual void prepareScene() { 
-        _cameraMover = std::make_shared<FreeCameraMover>(20.0f);
-        _cameraMover.get()->setNearFarPlanes(_params.near_plane, _params.far_plane);
-        _objects.push_back(_cameraMover);
+        _active_scene->prepare();
 
-        _objects.push_back(std::make_shared<Planet>("sun", 3.39f * 16.0f, 0.0f, 1.0f, 25.3f, "2k_sun.jpg"));
-        _objects.push_back(std::make_shared<Planet>("mercury", 2.4f, 77.9f, 87.9f, 58.6, "2k_mercury.jpg"));
-        _objects.push_back(std::make_shared<Planet>("venus", 6.05f, 128.2f, 224.7f, 243.0f,  "2k_venus_surface.jpg"));
-        _objects.push_back(std::make_shared<Planet>("earth", 6.37f, 169.5f, 365.2f, 0.99f, "2k_earth_daymap.jpg"));
-        _objects.push_back(std::make_shared<Planet>("mars", 3.39f, 247.9f, 686.9f, 1.1f, "2k_mars.jpg"));
-        _objects.push_back(std::make_shared<Planet>("jupiter", 55.49f, 798.5f, 4332.5f, 9.9f/24.0f, "2k_jupiter.jpg"));
-        _objects.push_back(std::make_shared<Planet>("saturn", 48.26f,  1449.3f, 10759.22f, 10.5f / 24.0f, "2k_saturn.jpg"));
-        _objects.push_back(std::make_shared<Planet>("uranus", 22.55f, 2896.67f, 30685.4, 17.2f / 24.0f, "2k_uranus.jpg"));
-        _objects.push_back(std::make_shared<Planet>("neptune", 20.76f, 4523.44f, 60190.03f, 0.66f, "2k_neptune.jpg"));
-
-        for (auto& obj : _objects) {
+        for (auto& obj : _active_scene->getElements()) {
             _renderer.AddRequest({RendererRequest::init, obj});
         }
     }
@@ -121,15 +106,16 @@ private:
     }
 
     float timeSinceLastFrame() {
-        return 0.0001f;
-        // auto now = _wall_clock.now();
-        // auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now - _last_frame_time);
-        // _last_frame_time = now;
-        // return static_cast<float>(nanos.count()) / 1000000000.0f;
+        // maybe this should go to renderer
+        double current_time = glfwGetTime();
+        double dt = current_time - _last_frame_time;
+        _last_frame_time = current_time;
+
+        return static_cast<float>(dt);
     }
 
     DrawInfo generateDrawInfo() {
-        auto cam_info = _cameraMover->cameraInfo();
+        auto cam_info = _active_scene->getCamera()->cameraInfo();
         DrawInfo renderInfo;
         renderInfo.view_mat = cam_info.viewMatrix;
         renderInfo.proj_mat = cam_info.projMatrix;
@@ -158,7 +144,7 @@ private:
         _renderer.StartFrame(draw_info);
 
         // This could probably be parallelized
-        for (auto& obj : _objects) {
+        for (auto& obj : _active_scene->getElements()) {
             obj->update(update_info);
             _renderer.AddRequest({ RendererRequest::draw, obj });
         }
