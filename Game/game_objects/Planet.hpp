@@ -33,8 +33,9 @@ public:
             auto x = (norm_sphere_coords.x + 1.0f) / 2.0f;
             auto y = (norm_sphere_coords.y + 1.0f) / 2.0f;
             auto z = (norm_sphere_coords.z + 1.0f) / 2.0f;
-            float theta = std::atan(std::sqrt(x*x + y*y) / z);
-            float phi = std::atan(y / x);
+            
+            float theta = std::atan2(std::sqrt(x*x + y*y), z);
+            float phi = std::atan2(y, x);
             return glm::vec2{theta, phi} / std::numbers::pi_v<float>;
         };
 
@@ -64,7 +65,6 @@ public:
         _position.y = std::cos(_angle) * _system_radius;
         _angle += static_cast<float>(info.dt) * std::numbers::pi_v<float> * 2.0f / (_full_cycle_time);
         _self_rotation += static_cast<float>(info.dt) * std::numbers::pi_v<float> * 2.0f / (_self_rotation_time);
-
         _graphics->setRotation(glm::angleAxis(_self_rotation, glm::vec3(0.0f, 0.0f, 1.0f)));
         _graphics->setPosition(_position);
         _graphics->update(info);
