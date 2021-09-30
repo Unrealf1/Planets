@@ -63,7 +63,8 @@ public:
         _position.z = 0.0f;
         _position.y = std::cos(_angle) * _system_radius;
         _angle += static_cast<float>(info.dt) * std::numbers::pi_v<float> * 2.0f / (_full_cycle_time);
-        _self_rotation += static_cast<float>(info.dt) * std::numbers::pi_v<float> * 2.0f / (_self_rotation_time); 
+        _self_rotation += static_cast<float>(info.dt) * std::numbers::pi_v<float> * 2.0f / (_self_rotation_time);
+
         _graphics->setRotation(glm::angleAxis(_self_rotation, glm::vec3(0.0f, 0.0f, 1.0f)));
         _graphics->setPosition(_position);
         _graphics->update(info);
@@ -82,9 +83,9 @@ private:
     float _system_radius;       //!< In 10^6 km
     float _full_cycle_time;     //!< In Earth days (sideris)
     float _self_rotation_time;  //!< In Earth days
-    float _self_rotation;
     
     glm::vec3 _position;
-    float _angle = 0;
+    float _angle = 0.0f;
+    float _self_rotation = 0.0f;
 };
 
