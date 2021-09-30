@@ -42,6 +42,9 @@ public:
         _state.alive = false;
         _state.state_mutex.unlock();
 
+        _state.rendering_finished.notify_one();
+        _state.rendering_started.notify_one();
+
         _worker.join();
     }
 
