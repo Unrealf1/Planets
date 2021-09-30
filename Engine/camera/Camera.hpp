@@ -117,7 +117,12 @@ protected:
 class FreeCameraMover : public CameraMover
 {
 public:
-    FreeCameraMover(float speed);
+    FreeCameraMover(
+        float speed, 
+        glm::vec3 starting_position, 
+        const glm::vec3& looking_at, 
+        const glm::vec3& up = {0.0f, 0.0f, 1.0f}
+    );
 
     void handleKey(const KeyInputEvent&) override;
     void handleMouseMove(const MouseMoveInputEvent&) override;

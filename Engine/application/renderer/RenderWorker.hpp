@@ -28,16 +28,6 @@ private:
 
     void ResetFrame();
 
-    void InitGui() {
-        // later should be moved to gui object
-        // IMGUI_CHECKVERSION();
-        // ImGui::CreateContext();
-        // ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-        // ImGui_ImplGlfw_InitForOpenGL(_window, false);
-        // ImGui_ImplOpenGL3_Init("#version 430");
-    }
-
     bool _gl_initialized = false;
     RendererState& _state;
     std::shared_ptr<spdlog::logger> _logger;

@@ -4,6 +4,7 @@
 #include "application/ApplicationParameters.hpp"
 #include "game_objects/Planet.hpp"
 #include "camera/Camera.hpp"
+#include "game_objects/GameGui.hpp"
 
 
 class GameScene : public IBasicScene {
@@ -13,8 +14,8 @@ public:
     _near_plane(params.near_plane),
     _far_plane(params.far_plane) { }
 
-    void prepare() override {
-        _cameraMover = std::make_shared<FreeCameraMover>(20.0f);;
+    void prepare(GLFWwindow* window) override {
+        _cameraMover = std::make_shared<FreeCameraMover>(20.0f, glm::vec3{85.0f, 0.0f, 20.0f}, glm::vec3{85.0f, 1.0f, 20.0f});
         _cameraMover.get()->setNearFarPlanes(_near_plane, _far_plane);
         addElement(_cameraMover);
 
@@ -27,6 +28,9 @@ public:
         addElement(std::make_shared<Planet>("saturn", 48.26f,  1449.3f, 10759.22f, 10.5f / 24.0f, "2k_saturn.jpg"));
         addElement(std::make_shared<Planet>("uranus", 22.55f, 2896.67f, 30685.4, 17.2f / 24.0f, "2k_uranus.jpg"));
         addElement(std::make_shared<Planet>("neptune", 20.76f, 4523.44f, 60190.03f, 0.66f, "2k_neptune.jpg"));
+
+        //Imgui is demanding. It did cost me about 5k fps :)
+        addElement(std::make_shared<GameGui>(window));
     }
 
     std::shared_ptr<CameraMover> getCamera() {

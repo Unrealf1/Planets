@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <memory>
+#include <glm/glm.hpp>
 #include "input/InputManager.hpp"
 
 
@@ -11,4 +12,5 @@ struct UpdateInfo {
     InputManager::TKeyInputs keyInputs;
     InputManager::TMouseMoveInputs mouseMoveInputs;
     InputManager::TMouseScrollInputs mouseScrollInputs;
+    glm::vec3 player_position;
 };

@@ -101,13 +101,17 @@ void OrbitCameraMover::update(const UpdateInfo& info) {
 
 //=============================================
 
-FreeCameraMover::FreeCameraMover(float speed = 5.0f) :
+FreeCameraMover::FreeCameraMover(
+    float speed, 
+    glm::vec3 starting_position, 
+    const glm::vec3& looking_at, 
+    const glm::vec3& up) :
 CameraMover(),
 speed(speed),
-_pos(5.0f, 0.0f, 2.5f)
+_pos(starting_position),
+_rot( glm::toQuat( glm::lookAt(_pos, looking_at,up) ) )
 {       
-    //Нам нужно как-нибудь посчитать начальную ориентацию камеры
-    _rot = glm::toQuat(glm::lookAt(_pos, glm::vec3(0.0f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f)));
+
 }
 
 void FreeCameraMover::handleKey(const KeyInputEvent&) { }

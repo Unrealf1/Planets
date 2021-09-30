@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <memory>
-
+#include <GLFW/glfw3.h>
 
 /**
  * Scene is a container for scene objects
@@ -18,7 +18,7 @@ public:
 public:
     IScene() = default;
     virtual ~IScene() = default;
-    virtual void prepare() = 0;
+    virtual void prepare(GLFWwindow* window) = 0;
     virtual elements_t& getElements() = 0;
     virtual void addElement(std::shared_ptr<ISceneObject>) = 0;
     virtual std::shared_ptr<CameraMover> getCamera() = 0;

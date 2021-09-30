@@ -28,6 +28,8 @@ public:
         _logger->info("started");
         _program_start = _wall_clock.now();
 
+        ensureRendererInitialized();
+
         prepareScene();
         _logger->debug("scene prepared");
         prepareInput();
@@ -46,6 +48,12 @@ private:
     std::unique_ptr<IScene> _active_scene;
     
 
+    void ensureRendererInitialized() {
+        while(!_renderer.IsInitialized()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
     float seconds_since_start() {
         auto duration = _wall_clock.now() - _program_start;
         return static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()) / 1000.0f;
@@ -63,7 +71,7 @@ private:
     }
 
     virtual void prepareScene() { 
-        _active_scene->prepare();
+        _active_scene->prepare(_renderer.getWindow());
 
         for (auto& obj : _active_scene->getElements()) {
             _renderer.AddRequest({RendererRequest::init, obj});
@@ -71,9 +79,6 @@ private:
     }
 
     void prepareInput() {
-        while(!_renderer.IsInitialized()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
         auto window = _renderer.getWindow();
         glfwMakeContextCurrent(window);
 
@@ -129,7 +134,8 @@ private:
             .dt = timeSinceLastFrame(),   
             .keyInputs = inputManager.extractKeyInputs(),
             .mouseMoveInputs = inputManager.extractMouseMoveEvents(),
-            .mouseScrollInputs = inputManager.extractMouseScrollEvents()
+            .mouseScrollInputs = inputManager.extractMouseScrollEvents(),
+            .player_position = _active_scene->getCamera()->getPos()
         };
     }
 
